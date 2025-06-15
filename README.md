@@ -76,13 +76,36 @@ Este erro ocorreu porque foi adicionada uma proteção no branch "develop" para 
 - 6 - Após voltar para o branch "develop", vamos fazer o pull do branch "develop" no github: `git pull origin develop`;
 - 7 - (Opcional) Após a mesclagem, podemos deletar o branch "feature/ci-cd" no github e localmente: `git branch -d feature/ci-cd`;
 
-### Passo 7 - Docker
+### Passo 8 - Docker
 [Build and push Docker images](https://github.com/marketplace/actions/build-and-push-docker-images)
 - Criar o arquivo Dockerfile;
 - Criar um novo branch feature/ci-cd-docker-build: `git checkout -b feature/ci-cd-docker-build`
 - Fazer o commit e push do Dockerfile;
 - Fazer o pull request no github para o branch develop;
+- Fazer o merge no github para o branch develop;
+- No ambiente de desenvolvimento, voltar para o brach develop: `git checkout develop`
+- Fazer pull do branch develop: `git pull origin develop`
 
 ### Testar o Dockerfile antes de subir para o repositório:
 - Criar imagem: `docker build -t calculator .`
 - Executar container: `docker run -it --rm calculator`
+
+### Passo 9 - Alterar arquivo "ci.yaml" para build com Docker
+- Adicione ao arquivo "ci.yaml" existente o bloco abaixo:
+```yaml
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set up Docker Build
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          push: false
+          tags: rodrigodittrich/ci-cd-go-calculator:latest   
+```
+- Criar um novo branch feature/ci-cd-docker-build-ci: `git checkout -b feature/ci-cd-docker-build-ci`
+- Fazer commit e push no branch feature/ci-cd-docker-build-ci: `git push origin feature/ci-cd-docker-build-ci`
+- Fazer o pull request no github para o branch develop;
