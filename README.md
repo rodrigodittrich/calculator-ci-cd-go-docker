@@ -75,3 +75,14 @@ Este erro ocorreu porque foi adicionada uma proteção no branch "develop" para 
 - 5 - Após fazer o merge no github para o branch "develop", vamos voltar para o branch "develop" localmente: `git checkout develop`;
 - 6 - Após voltar para o branch "develop", vamos fazer o pull do branch "develop" no github: `git pull origin develop`;
 - 7 - (Opcional) Após a mesclagem, podemos deletar o branch "feature/ci-cd" no github e localmente: `git branch -d feature/ci-cd`;
+
+### Passo 7 - Docker
+[Build and push Docker images](https://github.com/marketplace/actions/build-and-push-docker-images)
+- Criar o arquivo Dockerfile;
+- Criar um novo branch feature/ci-cd-docker-build: `git checkout -b feature/ci-cd-docker-build`
+- Fazer o commit e push do Dockerfile;
+- Fazer o pull request no github para o branch develop;
+
+### Testar o Dockerfile antes de subir para o repositório:
+- Criar imagem: `docker build -t calculator .`
+- Executar container: `docker run -it --rm calculator`
