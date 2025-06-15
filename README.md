@@ -109,3 +109,11 @@ Este erro ocorreu porque foi adicionada uma proteção no branch "develop" para 
 - Criar um novo branch feature/ci-cd-docker-build-ci: `git checkout -b feature/ci-cd-docker-build-ci`
 - Fazer commit e push no branch feature/ci-cd-docker-build-ci: `git push origin feature/ci-cd-docker-build-ci`
 - Fazer o pull request no github para o branch develop;
+- No ambiente de desenvolvimento, voltar para o brach develop: `git checkout develop`
+- Fazer pull do branch develop: `git pull origin develop`
+
+### Passo 10 - Fazer o push da imagem no docker hub
+- Na sua conta do github, nas configurações(Settings -> Security -> Secrets as variables -> Actions -> Repository secrets), adicionar usuário o token do docker hub.
+- Alterar o "ci.yaml" para fazer login no docker hub e fazer push da imagem;
+- Criar um novo branch feature/ci-cd-docker-push: `git checkout -b feature/ci-cd-docker-push`
+- Fazer commit e push no branch feature/ci-cd-docker-push: `git push origin feature/ci-cd-docker-push`
