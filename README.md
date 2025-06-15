@@ -1,10 +1,10 @@
-# Operações matemáticas utilizando GO, CI-CD com Dcoker
+# Operações matemáticas utilizando GO, CI-CD com Docker
 Exemplo de implementação das operações matemáticas utilizando Go Lang, com integração contínua utilizando Docker
 
 ## Processos de desenvolvimento
 
 ### Objetivo geral
-- Utilização de actions do github para realizar CI/CD e Dockerfile para criação de imagem e container;
+- Utilização de actions do github para realizar CI/CD com Dockerfile para criação de imagem e container;
 
 ### Objetivos especificos
 - Trabalhar com um branch develop protegido;
@@ -67,11 +67,14 @@ error: failed to push some refs to 'https://github.com/rodrigodittrich/calculato
 
 Este erro ocorreu porque foi adicionada uma proteção no branch "develop" para não fazer push diretamente no branch.
 
-### Passo 7 - pull request
+### Passo 7 - Pull Request
 - 1 - Vamos criar uma branch para a alteração feita no passo 6: `git checkout -b feature/ci-cd`;
 - 2 - Vamos fazer o push no branch feature/ci-cd: `git push origin feature/ci-cd`;
 - 3 - Vamos criar um "pull request" para o branch "develop" no github;
+![](files/pull-request-ci-cd.png)
+![](files/ckech-application.png)
 - 4 - Após o pull request ser aprovado, o branch "feature/ci-cd" será mesclado no branch "develop";
+![](files/merge-to-develop.png)
 - 5 - Após fazer o merge no github para o branch "develop", vamos voltar para o branch "develop" localmente: `git checkout develop`;
 - 6 - Após voltar para o branch "develop", vamos fazer o pull do branch "develop" no github: `git pull origin develop`;
 - 7 - (Opcional) Após a mesclagem, podemos deletar o branch "feature/ci-cd" no github e localmente: `git branch -d feature/ci-cd`;
@@ -117,3 +120,19 @@ Este erro ocorreu porque foi adicionada uma proteção no branch "develop" para 
 - Alterar o "ci.yaml" para fazer login no docker hub e fazer push da imagem;
 - Criar um novo branch feature/ci-cd-docker-push: `git checkout -b feature/ci-cd-docker-push`
 - Fazer commit e push no branch feature/ci-cd-docker-push: `git push origin feature/ci-cd-docker-push`
+
+### Passo 11 - Deixar o ambiente local atualizado no branch develop
+- No ambiente de desenvolvimento, voltar para o brach develop: `git checkout develop`
+- Fazer pull do branch develop: `git pull origin develop`
+- (Opcional) Deletar o branch local feature/ci-cd-docker-push: `git branch -d feature/ci-cd-docker-push`
+
+### Resultado final
+O resultado final é a execução completa do job fazendo o push da imagem para o docker hub
+- Job:
+![](files/job-push-image.png)
+- Docker Hub:
+![](files/image-docker-hub.png)
+
+### Testar imagem no docker hub
+- Testar imagem do docker hub: `docker run -it --rm --platform linux/amd64 rodrigodittrich/ci-cd-go-calculator`
+- Forçar se a plataforma é arm64: `docker run -it --rm --platform linux/arm64 rodrigodittrich/ci-cd-go-calculator`
