@@ -67,7 +67,7 @@ error: failed to push some refs to 'https://github.com/rodrigodittrich/calculato
 
 Este erro ocorreu porque foi adicionada uma proteção no branch "develop" para não fazer push diretamente no branch.
 
-### Passo 7 - pull request
+### Passo 8 - pull request
 - 1 - Vamos criar uma branch para a alteração feita no passo 6: `git checkout -b feature/ci-cd`;
 - 2 - Vamos fazer o push no branch feature/ci-cd: `git push origin feature/ci-cd`;
 - 3 - Vamos criar um "pull request" para o branch "develop" no github;
@@ -76,7 +76,7 @@ Este erro ocorreu porque foi adicionada uma proteção no branch "develop" para 
 - 6 - Após voltar para o branch "develop", vamos fazer o pull do branch "develop" no github: `git pull origin develop`;
 - 7 - (Opcional) Após a mesclagem, podemos deletar o branch "feature/ci-cd" no github e localmente: `git branch -d feature/ci-cd`;
 
-### Passo 7 - Docker
+### Passo 9 - Docker
 [Build and push Docker images](https://github.com/marketplace/actions/build-and-push-docker-images)
 - Criar o arquivo Dockerfile;
 - Criar um novo branch feature/ci-cd-docker-build: `git checkout -b feature/ci-cd-docker-build`
@@ -86,3 +86,22 @@ Este erro ocorreu porque foi adicionada uma proteção no branch "develop" para 
 ### Testar o Dockerfile antes de subir para o repositório:
 - Criar imagem: `docker build -t calculator .`
 - Executar container: `docker run -it --rm calculator`
+
+### Passo 10 - Alterar arquivo "ci.yaml" para build com Docker
+- Adicione ao arquivo "ci.yaml" existente o bloco abaixo:
+```yaml
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set up Docker Build
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          push: false
+          tags: rodrigodittrich/ci-cd-go-calculator:latest   
+```
+- Fazer commit e push no branch feature/ci-cd-docker-build: `git push origin feature/ci-cd-docker-build`
+- Fazer o pull request no github para o branch develop;
