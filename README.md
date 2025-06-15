@@ -21,3 +21,20 @@ Exemplo de implementação das operações matemáticas utilizando Go Lang, com 
 ### Passo 2 - Criar teste de unidade das operações
 - Criação dos testes de unidade para as operações de adição, subtração, multiplicação e divisão;
 - Executar os testes: `go test ./...`;
+
+### Passo 3 - Criar o arquivo .github/workflows/ci.yaml
+- Criação do arquivo ".github/workflows/ci.yaml" para realizar a CI/CD;
+- Neste passo, somente será executado o teste de unidade das operações no evento push do branch main;
+```yaml
+name: ci-cd-go-workflow
+on: [push]
+jobs:
+  check-application:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '1.19'
+      - run: go test ./...
+```
